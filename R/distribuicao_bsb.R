@@ -54,6 +54,7 @@ arrange_sf_bsb <- do.call(rbind, bsb_geobr_list)
 new_shapefile_mollweide_bsb <- st_transform(arrange_sf_bsb, crs = "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs")
 
 # Função para criar o mapa dos arranjos populacionais
+CBD_bsb <- data.frame(x = -4686183.065074, y = -1943368.445251) # ponto do CBD
 criar_mapa <- function(data, fill_var, title = NULL, fill_name, fill_limits = NULL, show_legend = TRUE) {
   mapa <- ggplot() +
     geom_raster(aes(x = x, y = y, fill = !!sym(fill_var)), data = data) +
@@ -64,7 +65,8 @@ criar_mapa <- function(data, fill_var, title = NULL, fill_name, fill_limits = NU
     theme(
       plot.title = element_text(size = 14, hjust = 1, vjust = 1),  # Título maior e à esquerda
       plot.caption = element_text(size = 12, hjust = 1.2, vjust = 14)  # Fonte maior e no canto inferior direito
-    )
+    ) +
+    geom_point(data = CBD_bsb, aes(x = x, y = y), color = "red", size = 1, shape = 22)
 }
 
 # Dados para os mapas de 1975
